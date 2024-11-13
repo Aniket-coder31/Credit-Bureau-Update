@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Credit Score</h2>
+<p>Your calculated credit score is: <strong>{{ score }}</strong></p>
+<a href="{% url 'question_view' %}">Retake Questionnaire</a>
+{% endblock %}

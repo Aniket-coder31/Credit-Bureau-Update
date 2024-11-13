@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Credit Score Questions</h2>
+
+<div id="question-container">
+  {% for question in questions %}
+    <div class="modal" id="questionModal{{forloop.counter }}">
+      <div class="modal-content">
+        <p>{{ question.text}}</p>
+        <form id="questionForm{{ forloop.counter }}" method="post" action="">
+          {% csrf_token %}
+          <label>
+            <input type="radio" name="answers" value="a" required> {{question.answer_a }}
+          </label><br>
+          <label>
+            <input type="radio" name="answers" value="b" required> {{question.answer_b }}
+          </label><br>
+          <label>
+            <input type="radio" name="answers" value="c" required> {{ question.answer_c }}
+          </label><br>
+          <label>
+            <input type="radio" name="answers" value="d" required> {{ question.answer_d }}
+          </label><br>
+          <button type="button" onclick="nextQuestion({{forloop.counter }})">Next</button>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<button onclick="startQuestions()">Start Questionnaire</button>
+
+<script>
+  let currentModal = 1;
+
+  function startQuestions() {
+    document.getElementById('questionModal1').style.display = 'block';
+  }
+
+  function nextQuestion(num) {
+    document.getElementById('questionModal' + num).style.display = 'none';
+    const nextModal = document.getElementById('questionModal' + (num + 1));
+    if (nextModal) {
+      nextModal.style.display = 'block';
+    } else {
+      document.getElementById('questionForm' + num).submit();
+    }
+  }
+</script>
+
+<style>
+  .modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  .modal-content {
+    text-align: center;
+  }
+</style>
+
+{% endblock %}
